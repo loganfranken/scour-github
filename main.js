@@ -8,7 +8,7 @@ var options = {
 };
 
 // Search Repositories
-var urls = [];
+var repos = [];
 var pageCount = 1;
 
 function searchRepositories()
@@ -24,8 +24,8 @@ function searchRepositories()
       return;
     }
 
-    results.items.forEach(function(result, i) {
-      urls.push(result.html_url);
+    results.items.forEach(function(result) {
+      repos.push(result);
     });
 
     pageCount++;
@@ -36,11 +36,46 @@ function searchRepositories()
 
 function outputResults()
 {
-  // Display Results
-  console.log('Total Results: ' + urls.length);
+  var orgs = {};
+  var projects = [];
 
-  urls.forEach(function(url, i) {
-    console.log(url);
+  repos.forEach(function(repo) {
+
+    // Store Organizations
+    if(repo.owner.type === 'Organization')
+    {
+      orgs[repo.owner.login] = { url: repo.owner.html_url };
+    }
+
+    // Store Projects
+    else
+    {
+      projects.push({ url: repo.html_url });
+    }
+
+  });
+
+  // Display Organizations
+  var orgCount = 0;
+
+  for(var org in orgs)
+  {
+    orgCount++;
+  }
+
+  console.log('Total Organizations: ' + orgCount);
+
+  for(var orgName in orgs)
+  {
+    console.log(orgs[orgName].url);
+  }
+
+  // Display Projects'
+  console.log('\n');
+  console.log('Total Projects: ' + projects.length);
+
+  projects.forEach(function(project) {
+    console.log(project.url);
   });
 }
 
