@@ -57,22 +57,31 @@ function outputResults()
 
   // Display Organizations
   var orgCount = 0;
+  var orgNames = [];
 
   for(var org in orgs)
   {
     orgCount++;
+    orgNames.push(org);
   }
 
-  console.log('Total Organizations: ' + orgCount);
+  console.log('Total Organizations: ' + orgNames.length);
 
-  for(var orgName in orgs)
+  for(var index in orgNames)
   {
+    var orgName = orgNames[index];
     console.log(orgs[orgName].url);
   }
 
   // Display Projects'
   console.log('\n');
   console.log('Total Projects: ' + projects.length);
+
+  projects.sort(function(p1, p2) {
+    return  (p1.url > p2.url) ? 1
+            : (p1.url < p2.url) ? -1
+            : 0;
+  });
 
   projects.forEach(function(project) {
     console.log(project.url);
