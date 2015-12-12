@@ -75,28 +75,28 @@ function outputResults()
     orgNames.push(org);
   }
 
+  orgNames.sort(function(o1, o2) {
+    return o1.toLowerCase().localeCompare(o2.toLowerCase());
+  });
+
   content += '<h2>Total Organizations: ' + orgNames.length + '</h2>';
 
   content += '<ul>';
-  for(var index in orgNames)
-  {
-    var orgName = orgNames[index];
+  orgNames.forEach(function(orgName) {
     content += '<li><a href="' + orgs[orgName].url + '" target="_blank">' + orgName + '</a></li>';
-  }
+  });
   content += '</ul>';
 
-  // Display Projects'
+  // Display Projects
   content += '<h2>Total Projects: ' + projects.length + '</h2>';
 
   projects.sort(function(p1, p2) {
-    return  (p1.url > p2.url) ? 1
-            : (p1.url < p2.url) ? -1
-            : 0;
+    return p1.url.toLowerCase().localeCompare(p2.url.toLowerCase());
   });
 
   content += '<ul>';
   projects.forEach(function(project) {
-    content += '<li><a href="' + project.url + '">' + project.url + '</a></li>';
+    content += '<li><a href="' + project.url + '" target="_blank">' + project.url + '</a></li>';
   });
   content += '</ul>';
 
