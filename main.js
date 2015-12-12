@@ -1,18 +1,12 @@
 var fs = require('fs');
 var request = require('request');
 
-var options = {
-  url: 'https://api.github.com/search/repositories?q=',
-  headers: {
-    'User-Agent': 'github-search'
-  }
-};
-
 var args = process.argv.slice(2);
 
 if(args.length === 0)
 {
-  throw "No search term provided";
+  console.error("No search term provided");
+  process.exit(1);
 }
 
 searchRepositories(args[0]);
@@ -23,6 +17,13 @@ var pageCount = 1;
 
 function searchRepositories(term)
 {
+  var options = {
+    url: 'https://api.github.com/search/repositories?q=',
+    headers: {
+      'User-Agent': 'github-search'
+    }
+  };
+
   options.url += (term + '&page=' + pageCount);
 
   request(options, function (error, response, body) {
@@ -39,7 +40,7 @@ function searchRepositories(term)
     });
 
     pageCount++;
-    searchRepositories();
+    searchRepositories(term);
 
   });
 }
@@ -88,27 +89,26 @@ function outputResults()
     return o1.toLowerCase().localeCompare(o2.toLowerCase());
   });
 
-  content += '<h2>Total Organizations: ' + orgNames.length + '</h2>';
+  console.log('<h2>Total Organizations: ' + orgNames.length + '</h2>');
 
-  content += '<ul>';
+  console.log('<ul>');
   orgNames.forEach(function(orgName) {
-    content += '<li><a href="' + orgs[orgName].url + '" target="_blank">' + orgName + '</a></li>';
+    console.log('<li><a href="' + orgs[orgName].url + '" target="_blank">' + orgName + '</a></li>');
   });
-  content += '</ul>';
+  console.log('</ul>');
 
   // Display Projects
-  content += '<h2>Total Projects: ' + projects.length + '</h2>';
+  console.log('<h2>Total Projects: ' + projects.length + '</h2>');
 
   projects.sort(function(p1, p2) {
     return p1.url.toLowerCase().localeCompare(p2.url.toLowerCase());
   });
 
-  content += '<ul>';
+  console.log('<ul>');
   projects.forEach(function(project) {
-    content += '<li><a href="' + project.url + '" target="_blank">' + project.url + '</a></li>';
+    console.log('<li><a href="' + project.url + '" target="_blank">' + project.url + '</a></li>');
   });
-  content += '</ul>';
+  console.log('</ul>');
 
-  content += '</body></html>';
-  fs.writeFile('results.html', content);
+  console.log('</body></html>');
 }
