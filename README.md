@@ -20,19 +20,19 @@ Simply enter your search term on the command line to print the results to
 the console:
 
 ```
-node main.js ucsb
+node scour-github.js ucsb
 ```
 
 You can, of course, output the results to a file instead:
 
 ```
-node main.js ucsb > results.txt
+node scour-github.js ucsb > results.txt
 ```
 
 Or, if you would prefer HTML output with links that you can click:
 
 ```
-node main.js ucsb --html > results.html
+node scour-github.js ucsb --html > results.html
 ```
 
 ## License
