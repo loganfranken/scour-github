@@ -2,19 +2,28 @@ var fs = require('fs');
 var request = require('request');
 
 var options = {
-  url: 'https://api.github.com/search/repositories?q=ucsb',
+  url: 'https://api.github.com/search/repositories?q=',
   headers: {
     'User-Agent': 'github-search'
   }
 };
 
+var args = process.argv.slice(2);
+
+if(args.length === 0)
+{
+  throw "No search term provided";
+}
+
+searchRepositories(args[0]);
+
 // Search Repositories
 var repos = [];
 var pageCount = 1;
 
-function searchRepositories()
+function searchRepositories(term)
 {
-  options.url += ('&page=' + pageCount);
+  options.url += (term + '&page=' + pageCount);
 
   request(options, function (error, response, body) {
 
@@ -103,5 +112,3 @@ function outputResults()
   content += '</body></html>';
   fs.writeFile('results.html', content);
 }
-
-searchRepositories();
