@@ -14,7 +14,6 @@ var cli = meow({
 
 searchRepositories(cli.input[0]);
 
-// Search Repositories
 var repos = [];
 var pageCount = 1;
 
@@ -34,7 +33,7 @@ function searchRepositories(term)
     var results = JSON.parse(body);
 
     if(!results.items || results.items.length === 0) {
-      outputResults();
+      onSearchComplete();
       return;
     }
 
@@ -48,20 +47,24 @@ function searchRepositories(term)
   });
 }
 
-function outputResults()
+function onSearchComplete(output)
 {
-  var orgs = {};
+  var orgs = [];
   var projects = [];
 
+  // Split organizations/projects
   repos.forEach(function(repo) {
 
-    // Store Organizations
+    // Organizations
     if(repo.owner.type === 'Organization')
     {
-      orgs[repo.owner.login] = { url: repo.owner.html_url };
+      orgs.push({
+        name: repo.owner.login, url:
+        repo.owner.html_url
+      });
     }
 
-    // Store Projects
+    // Projects
     else
     {
       projects.push({ url: repo.html_url });
@@ -69,49 +72,80 @@ function outputResults()
 
   });
 
-  var content = '<!DOCTYPE html>'
-                + '<html>'
-                + '<head>'
-                + '<meta charset="utf-8">'
-                + '<title>GitHub Search Results</title>'
-                + '</head>'
-                + '<body>';
-                + '<h1>GitHub Search Results</h1>';
-
-  // Display Organizations
-  var orgCount = 0;
-  var orgNames = [];
-
-  for(var org in orgs)
-  {
-    orgCount++;
-    orgNames.push(org);
-  }
-
-  orgNames.sort(function(o1, o2) {
-    return o1.toLowerCase().localeCompare(o2.toLowerCase());
+  // Sort
+  orgs.sort(function(o1, o2) {
+    return o1.name.toLowerCase().localeCompare(o2.name.toLowerCase());
   });
-
-  console.log('<h2>Total Organizations: ' + orgNames.length + '</h2>');
-
-  console.log('<ul>');
-  orgNames.forEach(function(orgName) {
-    console.log('<li><a href="' + orgs[orgName].url + '" target="_blank">' + orgName + '</a></li>');
-  });
-  console.log('</ul>');
-
-  // Display Projects
-  console.log('<h2>Total Projects: ' + projects.length + '</h2>');
 
   projects.sort(function(p1, p2) {
     return p1.url.toLowerCase().localeCompare(p2.url.toLowerCase());
   });
 
-  console.log('<ul>');
-  projects.forEach(function(project) {
-    console.log('<li><a href="' + project.url + '" target="_blank">' + project.url + '</a></li>');
-  });
-  console.log('</ul>');
-
-  console.log('</body></html>');
+  // Output
+  if(cli.flags.html)
+  {
+    outputHtml(orgs, projects);
+  }
+  else
+  {
+    outputConsole(orgs, projects);
+  }
 }
+
+function outputHtml(orgs, projects)
+{
+    // Header
+    console.log('<!DOCTYPE html>'
+                + '<html>'
+                + '<head>'
+                + '<meta charset="utf-8">'
+                + '<title>GitHub Search Results</title>'
+                + '</head>'
+                + '<body>'
+                + '<h1>GitHub Search Results</h1>');
+
+    // Organizations
+    console.log('<h2>Total Organizations: ' + orgs.length + '</h2>');
+
+    console.log('<ul>');
+    orgs.forEach(function(org) {
+      console.log('<li><a href="' + org.url + '" target="_blank">' + org.name + '</a></li>');
+    });
+    console.log('</ul>');
+
+    // Projects
+    console.log('<h2>Total Projects: ' + projects.length + '</h2>');
+
+    console.log('<ul>');
+    projects.forEach(function(project) {
+      console.log('<li><a href="' + project.url + '" target="_blank">' + project.url + '</a></li>');
+    });
+    console.log('</ul>');
+
+    // Footer
+    console.log('</body></html>');
+};
+
+function outputConsole(orgs, projects) {
+
+  // Header
+  console.log('GitHub Search Results');
+  console.log('\n')
+
+  // Organizations
+  console.log('Total Organizations: ' + orgs.length);
+
+  orgs.forEach(function(org) {
+    console.log(org.url);
+  });
+
+  console.log('\n');
+
+  // Projects
+  console.log('Total Projects: ' + projects.length);
+
+  projects.forEach(function(project) {
+    console.log(project.url);
+  });
+
+};
