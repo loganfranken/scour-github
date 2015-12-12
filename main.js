@@ -1,15 +1,18 @@
 var fs = require('fs');
+var meow = require('meow');
 var request = require('request');
 
-var args = process.argv.slice(2);
+var cli = meow({
+	help: [
+		'Usage',
+		'  $ scour-github <search-term>',
+		'',
+		'Options',
+		'  --html     Output results in HTML',
+	]
+});
 
-if(args.length === 0)
-{
-  console.error("No search term provided");
-  process.exit(1);
-}
-
-searchRepositories(args[0]);
+searchRepositories(cli.input[0]);
 
 // Search Repositories
 var repos = [];

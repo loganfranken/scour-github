@@ -4,6 +4,7 @@
   "description": "Command line utility for efficiently searching GitHub",
   "main": "main.js",
   "dependencies": {
+    "meow": "^3.6.0",
     "request": "^2.67.0"
   },
   "devDependencies": {},
