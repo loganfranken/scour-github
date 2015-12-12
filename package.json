@@ -1,7 +1,7 @@
 {
-  "name": "github-search",
+  "name": "scour-github",
   "version": "1.0.0",
-  "description": "",
+  "description": "Command line utility for efficiently searching GitHub",
   "main": "main.js",
   "dependencies": {
     "request": "^2.67.0"
@@ -12,12 +12,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/loganfranken/github-search.git"
+    "url": "git+https://github.com/loganfranken/scour-github.git"
   },
-  "author": "",
+  "author": "Logan Franken",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/loganfranken/github-search/issues"
+    "url": "https://github.com/loganfranken/scour-github/issues"
   },
-  "homepage": "https://github.com/loganfranken/github-search#readme"
+  "homepage": "https://github.com/loganfranken/scour-github#readme",
+  "keywords": [
+    "github",
+    "search"
+  ]
 }
