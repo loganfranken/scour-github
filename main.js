@@ -49,7 +49,7 @@ function searchRepositories(term)
 
 function onSearchComplete(output)
 {
-  var orgs = [];
+  var orgs = {};
   var projects = [];
 
   // Split organizations/projects
@@ -58,10 +58,12 @@ function onSearchComplete(output)
     // Organizations
     if(repo.owner.type === 'Organization')
     {
-      orgs.push({
+			// We use an object (rather than array) to store the organizations
+			// since we want a *distinct* list (no duplicates)
+			orgs[repo.owner.login] = {
         name: repo.owner.login, url:
         repo.owner.html_url
-      });
+      };
     }
 
     // Projects
@@ -72,8 +74,14 @@ function onSearchComplete(output)
 
   });
 
+	// Copy our key-value object into an array
+	var orgsList = [];
+	for(var org in orgs) {
+		orgsList.push(orgs[org]);
+	}
+
   // Sort
-  orgs.sort(function(o1, o2) {
+  orgsList.sort(function(o1, o2) {
     return o1.name.toLowerCase().localeCompare(o2.name.toLowerCase());
   });
 
@@ -84,11 +92,11 @@ function onSearchComplete(output)
   // Output
   if(cli.flags.html)
   {
-    outputHtml(orgs, projects);
+    outputHtml(orgsList, projects);
   }
   else
   {
-    outputConsole(orgs, projects);
+    outputConsole(orgsList, projects);
   }
 }
 
