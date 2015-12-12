@@ -1,3 +1,4 @@
+var fs = require('fs');
 var request = require('request');
 
 var options = {
@@ -55,6 +56,15 @@ function outputResults()
 
   });
 
+  var content = '<!DOCTYPE html>'
+                + '<html>'
+                + '<head>'
+                + '<meta charset="utf-8">'
+                + '<title>GitHub Search Results</title>'
+                + '</head>'
+                + '<body>';
+                + '<h1>GitHub Search Results</h1>';
+
   // Display Organizations
   var orgCount = 0;
   var orgNames = [];
@@ -65,17 +75,18 @@ function outputResults()
     orgNames.push(org);
   }
 
-  console.log('Total Organizations: ' + orgNames.length);
+  content += '<h2>Total Organizations: ' + orgNames.length + '</h2>';
 
+  content += '<ul>';
   for(var index in orgNames)
   {
     var orgName = orgNames[index];
-    console.log(orgs[orgName].url);
+    content += '<li><a href="' + orgs[orgName].url + '" target="_blank">' + orgName + '</a></li>';
   }
+  content += '</ul>';
 
   // Display Projects'
-  console.log('\n');
-  console.log('Total Projects: ' + projects.length);
+  content += '<h2>Total Projects: ' + projects.length + '</h2>';
 
   projects.sort(function(p1, p2) {
     return  (p1.url > p2.url) ? 1
@@ -83,9 +94,14 @@ function outputResults()
             : 0;
   });
 
+  content += '<ul>';
   projects.forEach(function(project) {
-    console.log(project.url);
+    content += '<li><a href="' + project.url + '">' + project.url + '</a></li>';
   });
+  content += '</ul>';
+
+  content += '</body></html>';
+  fs.writeFile('results.html', content);
 }
 
 searchRepositories();
