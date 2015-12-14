@@ -2,15 +2,13 @@ var fs = require('fs');
 var meow = require('meow');
 var request = require('request');
 
-var cli = meow({
-	help: [
-		'Usage',
-		'  $ scour-github <search-term>',
-		'',
-		'Options',
-		'  --html     Output results in HTML',
-	]
-});
+var cli = meow(`
+		Usage
+		  $ scour-github <search-term>
+
+		Options
+		  --html     Output results in HTML
+`);
 
 searchRepositories(cli.input[0]);
 
@@ -103,30 +101,30 @@ function onSearchComplete(output)
 function outputHtml(orgs, projects)
 {
     // Header
-    console.log('<!DOCTYPE html>'
-                + '<html>'
-                + '<head>'
-                + '<meta charset="utf-8">'
-                + '<title>GitHub Search Results</title>'
-                + '</head>'
-                + '<body>'
-                + '<h1>GitHub Search Results</h1>');
+    console.log(`<!DOCTYPE html>
+                <html>
+                <head>
+                <meta charset="utf-8">
+                <title>GitHub Search Results</title>
+                </head>
+                <body>
+                <h1>GitHub Search Results</h1>`);
 
     // Organizations
-    console.log('<h2>Total Organizations: ' + orgs.length + '</h2>');
+    console.log(`<h2>Total Organizations: ${orgs.length}</h2>`);
 
     console.log('<ul>');
     orgs.forEach(function(org) {
-      console.log('<li><a href="' + org.url + '" target="_blank">' + org.name + '</a></li>');
+      console.log(`<li><a href="${org.url}" target="_blank">${org.name}</a></li>`);
     });
     console.log('</ul>');
 
     // Projects
-    console.log('<h2>Total Projects: ' + projects.length + '</h2>');
+    console.log(`<h2>Total Projects: ${projects.length}</h2>`);
 
     console.log('<ul>');
     projects.forEach(function(project) {
-      console.log('<li><a href="' + project.url + '" target="_blank">' + project.url + '</a></li>');
+      console.log(`<li><a href="${project.url}" target="_blank">${project.url}</a></li>`);
     });
     console.log('</ul>');
 
@@ -141,7 +139,7 @@ function outputConsole(orgs, projects) {
   console.log('\n')
 
   // Organizations
-  console.log('Total Organizations: ' + orgs.length);
+  console.log(`Total Organizations: ${orgs.length}`);
 
   orgs.forEach(function(org) {
     console.log(org.url);
@@ -150,7 +148,7 @@ function outputConsole(orgs, projects) {
   console.log('\n');
 
   // Projects
-  console.log('Total Projects: ' + projects.length);
+  console.log(`Total Projects: ${projects.length}`);
 
   projects.forEach(function(project) {
     console.log(project.url);
