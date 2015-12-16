@@ -1,8 +1,10 @@
-var fs = require('fs');
-var meow = require('meow');
-var request = require('request');
+'use strict';
 
-var cli = meow(`
+const fs = require('fs');
+const meow = require('meow');
+const request = require('request');
+
+const cli = meow(`
 		Usage
 		  $ scour-github <search-term>
 
@@ -17,7 +19,7 @@ var pageCount = 1;
 
 function searchRepositories(term)
 {
-  var options = {
+  let options = {
     url: 'https://api.github.com/search/repositories?q=',
     headers: {
       'User-Agent': 'github-search'
@@ -28,7 +30,7 @@ function searchRepositories(term)
 
   request(options, function (error, response, body) {
 
-    var results = JSON.parse(body);
+    let results = JSON.parse(body);
 
     if(!results.items || results.items.length === 0) {
       onSearchComplete();
@@ -47,8 +49,8 @@ function searchRepositories(term)
 
 function onSearchComplete(output)
 {
-  var orgs = {};
-  var projects = [];
+  let orgs = {};
+  let projects = [];
 
   // Split organizations/projects
   repos.forEach(function(repo) {
@@ -73,8 +75,8 @@ function onSearchComplete(output)
   });
 
 	// Copy our key-value object into an array
-	var orgsList = [];
-	for(var org in orgs) {
+	let orgsList = [];
+	for(let org in orgs) {
 		orgsList.push(orgs[org]);
 	}
 
