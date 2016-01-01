@@ -28,7 +28,7 @@ function searchRepositories(term)
 
   options.url += (term + '&page=' + pageCount);
 
-  request(options, function (error, response, body) {
+  request(options, (error, response, body) => {
 
     let results = JSON.parse(body);
 
@@ -37,7 +37,7 @@ function searchRepositories(term)
       return;
     }
 
-    results.items.forEach(function(result) {
+    results.items.forEach(result => {
       repos.push(result);
     });
 
@@ -53,7 +53,7 @@ function onSearchComplete(output)
   let projects = [];
 
   // Split organizations/projects
-  repos.forEach(function(repo) {
+  repos.forEach(repo => {
 
     // Organizations
     if(repo.owner.type === 'Organization')
@@ -81,11 +81,11 @@ function onSearchComplete(output)
 	}
 
   // Sort
-  orgsList.sort(function(o1, o2) {
+  orgsList.sort((o1, o2) => {
     return o1.name.toLowerCase().localeCompare(o2.name.toLowerCase());
   });
 
-  projects.sort(function(p1, p2) {
+  projects.sort((p1, p2) => {
     return p1.url.toLowerCase().localeCompare(p2.url.toLowerCase());
   });
 
@@ -116,7 +116,7 @@ function outputHtml(orgs, projects)
     console.log(`<h2>Total Organizations: ${orgs.length}</h2>`);
 
     console.log('<ul>');
-    orgs.forEach(function(org) {
+    orgs.forEach(org => {
       console.log(`<li><a href="${org.url}" target="_blank">${org.name}</a></li>`);
     });
     console.log('</ul>');
@@ -125,7 +125,7 @@ function outputHtml(orgs, projects)
     console.log(`<h2>Total Projects: ${projects.length}</h2>`);
 
     console.log('<ul>');
-    projects.forEach(function(project) {
+    projects.forEach(project => {
       console.log(`<li><a href="${project.url}" target="_blank">${project.url}</a></li>`);
     });
     console.log('</ul>');
@@ -143,7 +143,7 @@ function outputConsole(orgs, projects) {
   // Organizations
   console.log(`Total Organizations: ${orgs.length}`);
 
-  orgs.forEach(function(org) {
+  orgs.forEach(org => {
     console.log(org.url);
   });
 
@@ -152,7 +152,7 @@ function outputConsole(orgs, projects) {
   // Projects
   console.log(`Total Projects: ${projects.length}`);
 
-  projects.forEach(function(project) {
+  projects.forEach(project => {
     console.log(project.url);
   });
 
