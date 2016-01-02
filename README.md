@@ -13,6 +13,7 @@ Features include:
 * Output results as a list of links
 * Separate organizations from projects
 * Alphabetized results
+* Ignore empty repositories
 
 ## Usage
 
@@ -34,6 +35,34 @@ Or, if you would prefer HTML output with links that you can click:
 ```
 node scour-github.js ucsb --html > results.html
 ```
+
+## Options
+
+### HTML Output
+
+```
+--html
+```
+
+Outputs the results as HTML with links that you can click to open each
+repository/organization in a separate browser tab.
+
+```
+node scour-github.js {searchTerm} --html > results.html
+```
+
+### Ignore Empty Repositories
+
+```
+--ignore-empty
+```
+
+Ignore any empty repositories (repositories with no code).
+
+```
+node scour-github.js {searchTerm} --ignore-empty
+```
+
 
 ## License
 

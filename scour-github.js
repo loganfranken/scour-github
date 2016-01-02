@@ -9,7 +9,8 @@ const cli = meow(`
 		  $ scour-github <search-term>
 
 		Options
-		  --html     Output results in HTML
+		  --html					Output results in HTML
+			--ignore-empty	Ignore empty repositories
 `);
 
 searchRepositories(cli.input[0]);
@@ -54,6 +55,11 @@ function onSearchComplete(output)
 
   // Split organizations/projects
   repos.forEach(repo => {
+
+		if(cli.flags.ignoreEmpty && repo.size === 0)
+		{
+			return;
+		}
 
     // Organizations
     if(repo.owner.type === 'Organization')
