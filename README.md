@@ -51,18 +51,18 @@ repository/organization in a separate browser tab.
 node scour-github.js {searchTerm} --html > results.html
 ```
 
-### Ignore Empty Repositories
+### Minimum Repository Size
 
 ```
---ignore-empty
+--min-size={size}
 ```
 
-Ignore any empty repositories (repositories with no code).
+Minimum repository "size" (value from the GitHub API). This value can be used
+to avoid pulling back empty or very small repositories.
 
 ```
-node scour-github.js {searchTerm} --ignore-empty
+node scour-github.js {searchTerm} --min-size=150
 ```
-
 
 ## License
 
