@@ -4,7 +4,7 @@ const fs = require('fs');
 const meow = require('meow');
 const request = require('request');
 
-const SmallRepoSize = 200;
+const SmallRepoSize = 150;
 
 const cli = meow(`
 		Usage
