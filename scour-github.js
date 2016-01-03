@@ -13,7 +13,15 @@ const cli = meow(`
 			--min-size={value}	Minimum repository size
 `);
 
-searchRepositories(cli.input[0]);
+var searchTerm = cli.input[0];
+
+if(!searchTerm)
+{
+	console.error("No search term provided");
+	return;
+}
+
+searchRepositories(searchTerm);
 
 var repos = [];
 var pageCount = 1;
