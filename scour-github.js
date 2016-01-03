@@ -4,12 +4,15 @@ const fs = require('fs');
 const meow = require('meow');
 const request = require('request');
 
+const SmallRepoSize = 200;
+
 const cli = meow(`
 		Usage
 		  $ scour-github <search-term>
 
 		Options
 		  --html							Output results in HTML
+			--ignore-small			Ignore "small" repositories
 			--min-size={value}	Minimum repository size
 `);
 
@@ -64,7 +67,19 @@ function onSearchComplete(output)
   // Split organizations/projects
   repos.forEach(repo => {
 
-		if(cli.flags.minSize && repo.size < cli.flags.minSize)
+		var minSize = 0;
+
+		if(cli.flags.minSize)
+		{
+			minSize = cli.flags.minSize;
+		}
+
+		if(cli.flags.ignoreSmall && SmallRepoSize > minSize)
+		{
+			minSize = SmallRepoSize;
+		}
+
+		if(minSize && repo.size < minSize)
 		{
 			return;
 		}

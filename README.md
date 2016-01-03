@@ -64,6 +64,15 @@ to avoid pulling back empty or very small repositories.
 node scour-github.js {searchTerm} --min-size=150
 ```
 
+### Ignore Small Repositories
+
+```
+--ignore-small
+```
+
+Ignores "small" repositories. This is equivalent to setting the minimum
+repository size flag to **200** (`--min-size=200`).
+
 ## License
 
 [ISC](https://opensource.org/licenses/ISC)
