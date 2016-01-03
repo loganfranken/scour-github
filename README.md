@@ -73,6 +73,15 @@ node scour-github.js {searchTerm} --min-size=150
 Ignores "small" repositories. This is equivalent to setting the minimum
 repository size flag to **200** (`--min-size=200`).
 
+```
+node scour-github.js {searchTerm} --ignore-small
+```
+
+If this flag is used with the minimum size flag (which is not recommended),
+then the greater of the two specified minimum sizes will take precedence.
+In other words, if `--min-size=300` and `--ignore-small` are used, 300 will be
+used as the minimum size.
+
 ## License
 
 [ISC](https://opensource.org/licenses/ISC)
