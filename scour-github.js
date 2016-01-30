@@ -44,6 +44,13 @@ function searchRepositories(term)
 
     let results = JSON.parse(body);
 
+		// If we hit the GitHub rate limit, wait a minute and try again
+		if(results.message && results.message.startsWith('API rate limit'))
+		{
+			setTimeout(() => { searchRepositories(term); }, 60000);
+			return;
+		}
+
     if(!results.items || results.items.length === 0) {
       onSearchComplete();
       return;
